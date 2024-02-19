@@ -23,7 +23,7 @@ function App() {
       }}
     >
       <div>
-        <Joystick size={100} baseColor="red" stickColor="blue" move={onMove} />
+      <Joystick size={100} baseColor="rgba(245, 245, 245, 0.2)" stickColor="rgba(128, 128, 128, 0.5)" move={onMove} />
       </div>
     </div>
   );
