@@ -7,7 +7,7 @@ import axios from 'axios';
 function App() {
   const [joystickData, setJoystickData] = useState({ x: 0, y: 0 });
   const [switchState, setSwitchState] = useState(false); // false for off, true for on
-  const url = "http://146.169.185.195:5000";
+  const url = "http://172.30.36.188:5000";
 
   const sendDataToServer = (data) => {
     console.log(data);
@@ -26,7 +26,8 @@ function App() {
     const y = e.y;
     setJoystickData({ x, y });
     const data = {
-      content: `Switch: ${switchState ? "on" : "off"}, Joystick: X=${x}, Y=${y}`
+      content: `(${x}, ${y})`
+      // content: `Switch: ${switchState ? "on" : "off"}, Joystick: X=${x}, Y=${y}`
     };
     sendDataToServer(data);
   };
