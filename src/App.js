@@ -37,15 +37,21 @@ function App() {
   const leftOnMove = (e) => {
     const x = e.x;
     const y = e.y;
-    setLeftJoystickData({ x, y });
+    setLeftJoystickData({ x:x, y:y });
   };
+  const leftStop = () => {
+    setLeftJoystickData({ x:0, y:0 });
+  }
   const rightOnMove = (e) => {
     const x = e.x;
     const y = e.y;
-    setRightJoystickData({ x, y });
+    setRightJoystickData({ x:x, y:y });
   };
+  const rightStop = () => {
+    setRightJoystickData({ x:0, y:0 })
+  }
 
-  const handleSwitchChange= (event) => {
+  const handleSwitchChange = (event) => {
     const newSwitchState = event.target.checked;
     setSwitchState(newSwitchState);
   };
@@ -65,7 +71,7 @@ function App() {
     }}
   >
     <div style={{ width: "30%", display: "flex", justifyContent: "center" }}>
-      <Joystick size={100} baseColor="rgba(245, 245, 245, 0.5)" stickColor="rgba(128, 128, 128, 0.7)" move={leftOnMove} />
+      <Joystick size={100} baseColor="rgba(245, 245, 245, 0.5)" stickColor="rgba(128, 128, 128, 0.7)" move={leftOnMove} stop={leftStop} />
     </div>
 
     <div>
@@ -73,7 +79,7 @@ function App() {
     </div>
 
     <div style={{ width: "30%", display: "flex", justifyContent: "center" }}>
-      <Joystick size={100} baseColor="rgba(245, 245, 245, 0.5)" stickColor="rgba(128, 128, 128, 0.7)" move={rightOnMove} />
+      <Joystick size={100} baseColor="rgba(245, 245, 245, 0.5)" stickColor="rgba(128, 128, 128, 0.7)" move={rightOnMove} stop={rightStop} />
     </div>
   </div>
   );
