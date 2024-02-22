@@ -5,7 +5,8 @@ import Switch from '@mui/material/Switch';
 import axios from 'axios';
 
 function App() {
-  const [joystickData, setJoystickData] = useState({ x: 0, y: 0 });
+  const [leftJoystickData, setLeftJoystickData] = useState({ x: 0, y: 0 });
+  const [rightJoystickData, setRightJoystickData] = useState({ x: 0, y: 0 });
   const [switchState, setSwitchState] = useState(false); // false for off, true for on
   const url = "http://172.30.36.188:5000";
 
@@ -21,53 +22,60 @@ function App() {
       });
   };
 
-  const onMove = (e) => {
+  useEffect(() => {
+    let data = {
+      // content: `(${x}, ${y})`
+      content: {
+        Mode: switchState ? 1 : 0,
+        leftJoystick: leftJoystickData,
+        rightJoystick: rightJoystickData
+      }
+    };
+    sendDataToServer(data);
+  }, [leftJoystickData, rightJoystickData, switchState])
+
+  const leftOnMove = (e) => {
     const x = e.x;
     const y = e.y;
-    setJoystickData({ x, y });
-    const data = {
-      content: `(${x}, ${y})`
-      // content: `Switch: ${switchState ? "on" : "off"}, Joystick: X=${x}, Y=${y}`
-    };
-    sendDataToServer(data);
+    setLeftJoystickData({ x, y });
+  };
+  const rightOnMove = (e) => {
+    const x = e.x;
+    const y = e.y;
+    setRightJoystickData({ x, y });
   };
 
-  const handleChange = (event) => {
+  const handleSwitchChange= (event) => {
     const newSwitchState = event.target.checked;
     setSwitchState(newSwitchState);
-    const data = {
-      content: `Switch: ${newSwitchState ? "on" : "off"}, Joystick: X=${joystickData.x}, Y=${joystickData.y}`
-    };
-    sendDataToServer(data);
   };
 
 
   return (
     <div
     style={{
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "flex-end", // Add this line to align items vertically in the center
       position: "absolute", // Use absolute positioning
-      top: "50%", // Position the top edge of the element at the middle of the parent
-      left: "50%", // Position the left edge of the element at the middle of the parent
-      transform: "translate(-50%, -50%)", // Shift the element up and to the left by half its height and width
-      height: "100vh", // Make div take up the full viewport height
-      paddingBottom: "20%"
-  }}
-
-    >
-      <div style={{ marginBottom: "20px" }}>
-        <Joystick size={100} baseColor="rgba(245, 245, 245, 0.5)" stickColor="rgba(128, 128, 128, 0.7)" move={onMove} />
-      </div>
-
-      <div>
-        <p>Switch State: {switchState ? 'On' : 'Off'}</p>
-        <Switch checked={switchState} onChange={handleChange} inputProps={{ 'aria-label': 'controlled' }}/>
-        {switchState ? 'Switch is ON' : 'Switch is OFF'}
-      </div>
-
+      left: 0, // Align the container to the left edge of the parent
+      right: 0, // Align the container to the right edge of the parent
+      bottom: "0%", // Position the container at the bottom of the parent
+      display: "flex", // Use flexbox for layout
+      justifyContent: "space-between", // Space out the child elements
+      alignItems: "center", // Align items vertically in the center
+      paddingBottom: "20px" // Add some padding at the bottom
+    }}
+  >
+    <div style={{ width: "30%", display: "flex", justifyContent: "center" }}>
+      <Joystick size={100} baseColor="rgba(245, 245, 245, 0.5)" stickColor="rgba(128, 128, 128, 0.7)" move={leftOnMove} />
     </div>
+
+    <div>
+      <Switch checked={switchState} onChange={handleSwitchChange} inputProps={{ 'aria-label': 'controlled' }}/>
+    </div>
+
+    <div style={{ width: "30%", display: "flex", justifyContent: "center" }}>
+      <Joystick size={100} baseColor="rgba(245, 245, 245, 0.5)" stickColor="rgba(128, 128, 128, 0.7)" move={rightOnMove} />
+    </div>
+  </div>
   );
 }
 
