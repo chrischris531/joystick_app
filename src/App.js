@@ -4,9 +4,9 @@ import Switch from '@mui/material/Switch';
 import axios from 'axios';
 
 function App() {
-  const [leftJoystickData, setLeftJoystickData] = useState({ x: 0, y: 0 });
-  const [rightJoystickData, setRightJoystickData] = useState({ x: 0, y: 0 });
-  const [switchState, setSwitchState] = useState(false); // false for off, true for on
+  const [leftJoystickData, setLeftJoystickData] = useState({ x: 0.0, y: 0.0 });
+  const [rightJoystickData, setRightJoystickData] = useState({ x: 0.0, y: 0.0 });
+  const [switchState, setSwitchState] = useState(0); // false for off, true for on
   const url = "http://172.30.36.188:5000";
 
   const sendDataToServer = (data) => {
@@ -14,7 +14,7 @@ function App() {
 
     axios.post(url, data)
       .then(response => {
-        console.log(response.data);
+        console.log('Success!', response.data);
       })
       .catch(error => {
         console.error('There was an error!', error);
@@ -39,7 +39,7 @@ function App() {
     setLeftJoystickData({ x:x, y:y });
   };
   const leftStop = () => {
-    setLeftJoystickData({ x:0, y:0 });
+    setLeftJoystickData({ x:0.0, y:0.0 });
   }
   const rightOnMove = (e) => {
     const x = e.x;
@@ -47,7 +47,7 @@ function App() {
     setRightJoystickData({ x:x, y:y });
   };
   const rightStop = () => {
-    setRightJoystickData({ x:0, y:0 })
+    setRightJoystickData({ x:0.0, y:0.0 })
   }
 
   const handleSwitchChange = (event) => {
